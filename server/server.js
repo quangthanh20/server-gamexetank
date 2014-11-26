@@ -8,6 +8,7 @@ var util = require("util"),					// Utility resources (logging, object inspection
     //app = express(),
     //http = require('http'),
     //server = http.createServer(app),
+    //server = http.createServer(app).listen(process.env.PORT || 8000);
     //io = require('socket.io').listen(server),
 	player = require("./class/Player").Player,	// Player class    
     game = require("./class/Game").Game,	        // Game class
@@ -40,7 +41,7 @@ function init() {
     playersRoom = [];
      
 	// Set up Socket.IO to listen on port 8000
-	socket = io.listen(8000);
+	socket = io.listen(process.env.PORT || 8000);    
     //console.log(functionPlayer);
     
 	// Configure Socket.IO
