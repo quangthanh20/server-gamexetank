@@ -1,6 +1,6 @@
 {
-  "name": "gamexetank.herokuapp.com",
-  "description": "gamexetank.herokuapp.com",
+  "name": "server-gamexetank.herokuapp.com",
+  "description": "server-gamexetank.herokuapp.com",
   "version": "0.0.1",  
   "dependencies": {
     "express": "~4.9.x",   

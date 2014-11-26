@@ -29,7 +29,7 @@ eval(fs.readFileSync('./server/function/JareUtils.js')+'');
 /**************************************************
 ** GAME INITIALISATION
 **************************************************/
-function init() {
+function initServer() {
 	// Create an empty array to store players
 	players = [];
     // Create an empty array to store bullets
@@ -123,7 +123,7 @@ eval(fs.readFileSync('./server/function/Room.js')+'');
 /**************************************************
 ** RUN THE GAME
 **************************************************/
-//init();
+initServer();
 scanRoom()
 //createEnemie();
 
