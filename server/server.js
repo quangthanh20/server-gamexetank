@@ -57,6 +57,12 @@ function initServer() {
 	//setEventHandlers();
 };
 
+socket.sockets.on('connection', function (socket) {
+  
+     console.log('test game');
+  
+});
+
 
 /**************************************************
 ** GAME EVENT HANDLERS
