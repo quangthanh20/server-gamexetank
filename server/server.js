@@ -19,14 +19,7 @@ var util = require("util"),					// Utility resources (logging, object inspection
     //sleep = require('sleep'),    
     fs = require('fs');   
     
-var socket = io.listen(process.env.PORT || 8000);       
 
-socket.sockets.on('connection', function (client) {
-    console.log("test game");
-    client.on('user message', function (msg) {
-        this.broadcast.emit('user message', client.nickname, msg);
-    });
-});
 
 
  
