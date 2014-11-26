@@ -19,6 +19,8 @@ var util = require("util"),					// Utility resources (logging, object inspection
     //sleep = require('sleep'),    
     fs = require('fs');   
     
+var socket = io.listen(process.env.PORT || 8000);       
+
 
 
 
