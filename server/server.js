@@ -62,6 +62,7 @@ function initServer() {
 ** GAME EVENT HANDLERS
 **************************************************/
 var setEventHandlers = function() {
+    console.log('test game');
 	// Socket.IO
 	socket.sockets.on("connection", onSocketConnection);
 };
@@ -70,7 +71,7 @@ var setEventHandlers = function() {
 function onSocketConnection(client) {
     //console.log(client);
 	util.log("New player has connected: "+client.id);
-
+    console.log('test game');
 	// Listen for client disconnected
 	client.on("disconnect", onClientDisconnect);
     
