@@ -4,7 +4,7 @@
 
 var util = require("util"),					// Utility resources (logging, object inspection, etc)
 	io = require("socket.io"),				// Socket.IO 
-    //express = require('express'),
+    express = require('express'),
     //app = express(),
     //http = require('http'),
     //server = http.createServer(app),
@@ -17,11 +17,16 @@ var util = require("util"),					// Utility resources (logging, object inspection
     //time = require("exectimer"),   
     path = require('path'),  
     //sleep = require('sleep'),    
-    fs = require('fs');   
+    fs = require('fs'); 
+      
+var port = process.env.PORT || 8000;
+  
+var app = express.createServer();
     
-var socket = io.listen(process.env.PORT || 8000);       
+var socket = io.listen(app);       
 
 
+app.listen(port);
 
 
  
