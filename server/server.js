@@ -45,29 +45,24 @@ function initServer() {
     //console.log(functionPlayer);
     
 	// Configure Socket.IO
-	socket.configure(function() {
+	/*socket.configure(function() {
 		// Only use WebSockets
 		socket.set("transports", ["websocket"]);
 
 		// Restrict log output
 		socket.set("log level", 2);
-	});
+	});*/
     console.log('test game');
 	// Start listening for events
 	//setEventHandlers();
 };
 
-socket.sockets.on('connection', function (socket) {
-  
-     console.log('test game');
-  
-});
 
 
 /**************************************************
 ** GAME EVENT HANDLERS
 **************************************************/
-var setEventHandlers = function() {
+/*var setEventHandlers = function() {
     console.log('test game');
 	// Socket.IO
 	socket.sockets.on("connection", onSocketConnection);
@@ -121,7 +116,7 @@ eval(fs.readFileSync('./server/function/Player.js')+'');
 eval(fs.readFileSync('./server/function/Game.js')+'');
 eval(fs.readFileSync('./server/function/Enemie.js')+'');
 eval(fs.readFileSync('./server/function/Room.js')+'');
-
+*/
 /*function loop() {
     console.log('1');
     setTimeout(loop, 1000);
