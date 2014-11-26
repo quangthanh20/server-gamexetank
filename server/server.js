@@ -123,7 +123,7 @@ eval(fs.readFileSync('./server/function/Room.js')+'');
 /**************************************************
 ** RUN THE GAME
 **************************************************/
-init();
+//init();
 scanRoom()
 //createEnemie();
 
