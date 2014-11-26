@@ -47,16 +47,16 @@ function initServer() {
     //console.log(functionPlayer);
     
 	// Configure Socket.IO
-	/*socket.configure(function() {
+	socket.configure(function() {
 		// Only use WebSockets
 		socket.set("transports", ["websocket"]);
 
 		// Restrict log output
 		socket.set("log level", 2);
-	});*/
-    console.log('test game');
+	});
+    //console.log('test game');
 	// Start listening for events
-	//setEventHandlers();
+	setEventHandlers();
 };
 
 
@@ -64,7 +64,7 @@ function initServer() {
 ** GAME EVENT HANDLERS
 **************************************************/
 var setEventHandlers = function() {
-    console.log('test game');
+    //console.log('test game');
 	// Socket.IO
 	socket.sockets.on("connection", onSocketConnection);
 };
@@ -73,7 +73,7 @@ var setEventHandlers = function() {
 function onSocketConnection(client) {
     //console.log(client);
 	util.log("New player has connected: "+client.id);
-    console.log('test game');
+    //console.log('test game');
 	// Listen for client disconnected
 	client.on("disconnect", onClientDisconnect);
     
@@ -127,7 +127,7 @@ eval(fs.readFileSync('./server/function/Room.js')+'');
 ** RUN THE GAME
 **************************************************/
 initServer();
-//scanRoom()
+scanRoom()
 //createEnemie();
 
 
