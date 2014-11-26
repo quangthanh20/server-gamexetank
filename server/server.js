@@ -1,133 +1,87 @@
-/**************************************************
-** NODE.JS REQUIREMENTS
-**************************************************/
+/**
+ * Module dependencies.
+ */
 
-var util = require("util"),					// Utility resources (logging, object inspection, etc)
-	io = require("socket.io"),				// Socket.IO 
-    //express = require('express'),
-    //app = express(),
-    //http = require('http'),
-    //server = http.createServer(app),
-    //server = http.createServer(app).listen(process.env.PORT || 8000);
-    //io = require('socket.io').listen(server),
-	player = require("./class/Player").Player,	// Player class    
-    game = require("./class/Game").Game,	        // Game class
-    MapGame = require("./class/Map").Map,	        // Map class 
-    Enemie = require("./class/Enemie").Enemie,	        // Enemie class  
-    //time = require("exectimer"),   
-    path = require('path'),  
-    //sleep = require('sleep'),    
-    fs = require('fs');       
+var express = require('express')
+  , stylus = require('stylus')
+  , nib = require('nib')
+  , sio = require('socket.io');
 
-eval(fs.readFileSync('./server/config/init.js')+'');
+/**
+ * App.
+ */
 
-eval(fs.readFileSync('./server/function/math.js')+'');
-eval(fs.readFileSync('./server/function/JareUtils.js')+'');
+var app = express.createServer();
 
+/**
+ * App configuration.
+ */
 
+app.configure(function () {
+  app.use(stylus.middleware({ src: __dirname + '/public', compile: compile }));
+  app.use(express.static(__dirname + '/public'));
+  app.set('views', __dirname);
+  app.set('view engine', 'jade');
 
-/**************************************************
-** GAME INITIALISATION
-**************************************************/
-function initServer() {
-	// Create an empty array to store players
-	players = [];
-    // Create an empty array to store bullets
-	bullets = [];
-    // Create an empty array to store Enemies
-	enemies = [];
-    
-    numberPlayerRoom = [];
-    playersRoom = [];
-     
-	// Set up Socket.IO to listen on port 8000
-	socket = io.listen(process.env.PORT || 8000);    
-    //console.log(functionPlayer);
-    
-	// Configure Socket.IO
-	/*socket.configure(function() {
-		// Only use WebSockets
-		socket.set("transports", ["websocket"]);
+  function compile (str, path) {
+    return stylus(str)
+      .set('filename', path)
+      .use(nib());
+  };
+});
 
-		// Restrict log output
-		socket.set("log level", 2);
-	});*/
-    console.log('test game');
-	// Start listening for events
-	//setEventHandlers();
-};
+/**
+ * App routes.
+ */
 
+app.get('/', function (req, res) {
+  res.render('index', { layout: false });
+});
 
+/**
+ * App listen.
+ */
 
-/**************************************************
-** GAME EVENT HANDLERS
-**************************************************/
-/*var setEventHandlers = function() {
-    console.log('test game');
-	// Socket.IO
-	socket.sockets.on("connection", onSocketConnection);
-};
+var port = process.env.PORT || 3000;
+app.listen(port, function () {
+  var addr = app.address();
+  console.log('   app listening on http://' + addr.address + ':' + addr.port);
+});
 
-// New socket connection
-function onSocketConnection(client) {
-    //console.log(client);
-	util.log("New player has connected: "+client.id);
-    console.log('test game');
-	// Listen for client disconnected
-	client.on("disconnect", onClientDisconnect);
-    
-    // Listen for new player message
-	client.on("check room", onCheckRoom);
+/**
+ * Socket.IO server (single process only)
+ */
 
-	// Listen for new player message
-	client.on("new player", onNewPlayer);
+var io = sio.listen(app)
+  , nicknames = {};
 
-	// Listen for move player bullets
-	client.on("bullets player", onBulletsPlayer);
-    
-    // Listen for player message
-	client.on("move player", onMovePlayer);   
- 
-    // Listen for Enemie message
-	client.on("move enemie", locationEnemie);  
-    
-    // Listen for game set
-	client.on("game set", onGameSet);
-    
-    // Listen for player die
-    client.on("player die", onPlayerDie);
-    
-    // Listen for game restart
-    client.on("game restart", onGameRestart);
-    
-    // Listen for game die
-    client.on("game die", onGameDie);
-    
-    // Listen for rooms get
-    client.on("rooms get", onRoomsGet);
-    
-    // Listen for new room
-    client.on("new room", onNewRooms);
-};
+// Set our transports
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 20); 
+});
 
+io.sockets.on('connection', function (socket) {
+  socket.on('user message', function (msg) {
+    socket.broadcast.emit('user message', socket.nickname, msg);
+  });
 
+  socket.on('nickname', function (nick, fn) {
+    if (nicknames[nick]) {
+      fn(true);
+    } else {
+      fn(false);
+      nicknames[nick] = socket.nickname = nick;
+      socket.broadcast.emit('announcement', nick + ' connected');
+      io.sockets.emit('nicknames', nicknames);
+    }
+  });
 
-eval(fs.readFileSync('./server/function/Player.js')+'');
-eval(fs.readFileSync('./server/function/Game.js')+'');
-eval(fs.readFileSync('./server/function/Enemie.js')+'');
-eval(fs.readFileSync('./server/function/Room.js')+'');
-*/
-/*function loop() {
-    console.log('1');
-    setTimeout(loop, 1000);
-}*/
+  socket.on('disconnect', function () {
+    if (!socket.nickname) return;
 
-/**************************************************
-** RUN THE GAME
-**************************************************/
-initServer();
-//scanRoom()
-//createEnemie();
-
-
- 
+    delete nicknames[socket.nickname];
+    socket.broadcast.emit('announcement', socket.nickname + ' disconnected');
+    socket.broadcast.emit('nicknames', nicknames);
+  });
+});
