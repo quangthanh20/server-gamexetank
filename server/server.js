@@ -25,7 +25,7 @@ socket.sockets.on('connection', function (client) {
     console.log("test game");
     client.on('user message', function (msg) {
         this.broadcast.emit('user message', client.nickname, msg);
-    };
+    });
 });
 
 
