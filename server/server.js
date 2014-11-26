@@ -52,9 +52,9 @@ function initServer() {
 		// Restrict log output
 		socket.set("log level", 2);
 	});
-
+    console.log('test game');
 	// Start listening for events
-	setEventHandlers();
+	//setEventHandlers();
 };
 
 
@@ -125,7 +125,7 @@ eval(fs.readFileSync('./server/function/Room.js')+'');
 ** RUN THE GAME
 **************************************************/
 initServer();
-scanRoom()
+//scanRoom()
 //createEnemie();
 
 
